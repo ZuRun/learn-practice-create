@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.zull.lpc</groupId>
+    <artifactId>learn-practice-create</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>lpc-common</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <!--<spring.boot.version>2.1.3.RELEASE</spring.boot.version>-->
+        <!--阿里数据库连接池-->
+        <druid-version>1.1.9</druid-version>
+        <mybatis_plus_plus>3.1.2</mybatis_plus_plus>
+        <!--fashjson-->
+        <fastjson-version>1.2.58</fastjson-version>
+        <!--谷歌工具类-->
+        <guava.version>27.0.1-jre</guava.version>
+        <!--用来支持分布式锁等-->
+        <redisson-version>3.10.5</redisson-version>
+        <!--集成Lombok,让代码更简洁-->
+        <lombok-version>1.18.2</lombok-version>
+        <!--flyway-数据库版本控制-->
+        <flyway-version>5.0.3</flyway-version>
+        <!--tracing-->
+        <tracing-version>0.0.12-RELEASE</tracing-version>
+        <rocketmq.version>4.1.0-incubating</rocketmq.version>
+        <!--kryo序列化-->
+        <kryo_version>0.42</kryo_version>
+        <!--kryo序列化-->
+        <kryo_version>0.42</kryo_version>
+        <zkclient_version>0.1</zkclient_version>
+        <dubbo.version>2.6.2</dubbo.version>
+        <alibaba.spring.support.version>1.0.5</alibaba.spring.support.version>
+        <zookeeper_version>3.4.6</zookeeper_version>
+        <nacos_version>0.3.4</nacos_version>
+        <nacos_springboot_version>0.2.4</nacos_springboot_version>
+        <nacos_client_version>1.1.4</nacos_client_version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!--        <version>2.0.5.RELEASE</version>-->
+        <version>2.2.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;支持常规的测试依赖，包括JUnit、Hamcrest、Mockito以及spring-test模块。&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;切面&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-aop</artifactId>-->
+<!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok-version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+    <!--指定使用maven打包-->
+    <build>
+        <plugins>
+            <!--指明jdk版本-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <!--默认关掉单元测试 -->
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!--maven镜像仓库-->
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-plugin</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
