@@ -17,6 +17,7 @@
         <module>lpc-common-mybatis-plus</module>
         <module>lpc-common-redis</module>
         <module>lpc-common-redis-redisson</module>
+        <module>lpc-create-cache</module>
     </modules>
 
 </project>

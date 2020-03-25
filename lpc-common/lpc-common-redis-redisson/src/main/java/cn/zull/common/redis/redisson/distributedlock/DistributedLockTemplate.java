@@ -1,12 +1,11 @@
 package cn.zull.common.redis.redisson.distributedlock;
 
 
-import com.iflytek.iot.test.common.constants.ErrorCode;
-import com.iflytek.iot.test.redisson.exception.DistributedLockException;
+import cn.zull.common.redis.redisson.exception.DistributedLockException;
+import cn.zull.lpc.common.basis.constants.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +18,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class DistributedLockTemplate implements DistributedLock {
-    @Autowired
-    @Qualifier("myRedissonClient")
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
+
+    public DistributedLockTemplate(@Qualifier("redissonClient") RedissonClient redissonClient) {
+        this.redissonClient = redissonClient;
+    }
 
     @Override
     public <T> T tryLock(String lockName, SuperDistributedLockCallback<T> callback, long waitTime, long leaseTime, TimeUnit timeUnit, boolean fairLock) {

@@ -1,17 +1,15 @@
 package cn.zull.common.redis.redisson.distributedlock;
 
-
-import com.iflytek.iot.test.common.constants.ErrorCode;
-import com.iflytek.iot.test.common.exception.BusinessException;
-import com.iflytek.iot.test.common.exception.IflytekRuntimeException;
-import com.iflytek.iot.test.redisson.exception.DistributedLockException;
+import cn.zull.common.redis.redisson.exception.DistributedLockException;
+import cn.zull.lpc.common.basis.constants.ErrorCode;
+import cn.zull.lpc.common.basis.exception.BusinessException;
+import cn.zull.lpc.common.basis.exception.LpcRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,10 +23,13 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class DistributedLockAspect {
-    @Autowired
-    DistributedLock lock;
+    final DistributedLock lock;
 
-    @Pointcut(value = "@annotation(com.iflytek.iot.test.redisson.distributedlock.DistributedLockAnnotation)")
+    public DistributedLockAspect(DistributedLock lock) {
+        this.lock = lock;
+    }
+
+    @Pointcut(value = "@annotation(cn.zull.common.redis.redisson.distributedlock.DistributedLockAnnotation)")
     public void distributedLockAspect() {
     }
 
@@ -118,8 +119,8 @@ public class DistributedLockAspect {
                 throw (BusinessException) throwable;
             }
             log.error("[分布式锁切面捕获异常] eName:{} msg:{}", throwable.getClass().getSimpleName(), throwable.getMessage());
-            if (throwable instanceof IflytekRuntimeException) {
-                throw (IflytekRuntimeException) throwable;
+            if (throwable instanceof LpcRuntimeException) {
+                throw (LpcRuntimeException) throwable;
             }
             if (throwable instanceof RuntimeException) {
                 throw (RuntimeException) throwable;

@@ -43,17 +43,9 @@ public class RedissonConfig {
     @Value("${spring.redis.cluster.nodes:0}")
     private List<String> nodesList;
 
-    /**
-     * redisson
-     *
-     * @return
-     */
-    @Bean("redissonCache")
-    public IRedisCache redissonCache() {
-        return new RedissonCache(redissonClient());
-    }
 
-    private RedissonClient redissonClient() {
+    @Bean("redissonClient")
+    public RedissonClient redissonClient() {
         Config config = new Config();
         config.setCodec(new StringCodec());
         if (isluster) {
@@ -79,5 +71,16 @@ public class RedissonConfig {
         }
         return Redisson.create(config);
     }
+
+    /**
+     * redisson
+     *
+     * @return
+     */
+    @Bean("redissonCache")
+    public IRedisCache redissonCache(RedissonClient redissonClient) {
+        return new RedissonCache(redissonClient);
+    }
+
 
 }

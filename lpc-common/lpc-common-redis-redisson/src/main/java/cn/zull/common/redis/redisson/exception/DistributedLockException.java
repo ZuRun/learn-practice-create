@@ -1,8 +1,9 @@
 package cn.zull.common.redis.redisson.exception;
 
-import com.iflytek.iot.test.common.constants.ErrorCode;
-import com.iflytek.iot.test.common.constants.IMessage;
-import com.iflytek.iot.test.common.exception.BusinessException;
+
+import cn.zull.lpc.common.basis.constants.ErrorCode;
+import cn.zull.lpc.common.basis.constants.IMessage;
+import cn.zull.lpc.common.basis.exception.BusinessException;
 
 /**
  * 调用分布式锁异常
