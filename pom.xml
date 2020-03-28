@@ -43,8 +43,7 @@
         <alibaba.spring.support.version>1.0.5</alibaba.spring.support.version>
         <zookeeper_version>3.4.6</zookeeper_version>
         <nacos_version>0.3.4</nacos_version>
-        <nacos_springboot_version>0.2.4</nacos_springboot_version>
-        <nacos_client_version>1.1.4</nacos_client_version>
+        <nacos_springboot_version>0.2.7</nacos_springboot_version>
     </properties>
 
     <parent>

@@ -18,6 +18,7 @@
         <module>lpc-common-redis</module>
         <module>lpc-common-redis-redisson</module>
         <module>lpc-common-cache</module>
+        <module>lpc-common-nacos</module>
     </modules>
 
 </project>
