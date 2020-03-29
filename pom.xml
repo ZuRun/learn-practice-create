@@ -11,6 +11,7 @@
     <modules>
         <module>lpc-common</module>
         <module>lpc-practice-spring</module>
+        <module>lpc-learn-basic</module>
     </modules>
 
     <properties>
