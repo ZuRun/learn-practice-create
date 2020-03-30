@@ -6,19 +6,13 @@ import cn.zull.lpc.common.cache.monitor.HitRateManger;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -26,17 +20,10 @@ import java.lang.reflect.Method;
  * @date 2020/3/26 10:08:12
  */
 @Slf4j
-@Aspect
-@Component
-public class CacheAspect {
-    private final ExpressionParser parser = new SpelExpressionParser();
-    private final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
-    private final ICacheManager<String> iCacheManager;
-    private final HitRateManger hitRateManger;
+public class CacheAbleAspect extends BaseCacheAspect {
 
-    public CacheAspect(ICacheManager<String> iCacheManager, HitRateManger hitRateManger) {
-        this.iCacheManager = iCacheManager;
-        this.hitRateManger = hitRateManger;
+    public CacheAbleAspect(ICacheManager<String> iCacheManager, HitRateManger hitRateManger) {
+        super(iCacheManager, hitRateManger);
     }
 
     @Pointcut(value = "@annotation(cn.zull.lpc.common.cache.annotation.Cacheable)")
@@ -52,39 +39,54 @@ public class CacheAspect {
         Class[] parameterTypes = ((MethodSignature) pjp.getSignature()).getMethod().getParameterTypes();
         Method method = targetClass.getMethod(methodName, parameterTypes);
 
-        Annotation[] annotations = method.getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (Cacheable.class.equals(annotation.annotationType())) {
-                return cacheable(pjp, targetClass, methodName, method, method.getAnnotation(Cacheable.class));
-            }
-        }
-        return pjp.proceed();
+        Cacheable cacheable = method.getAnnotation(Cacheable.class);
+        return cacheable(pjp, targetClass, methodName, method, cacheable);
+//
+//        Annotation[] annotations = method.getAnnotations();
+//        for (Annotation annotation : annotations) {
+//            if (Cacheable.class.equals(annotation.annotationType())) {
+//                return cacheable(pjp, targetClass, methodName, method, method.getAnnotation(Cacheable.class));
+//            }
+//        }
+//        return pjp.proceed();
     }
 
     private Object cacheable(ProceedingJoinPoint pjp, Class targetClass, String methodName, Method method, Cacheable annotation) throws Throwable {
         Class<?> returnType = method.getReturnType();
         Object[] arguments = pjp.getArgs();
+
+        // 解析spEl表达式
         String[] params = discoverer.getParameterNames(method);
         EvaluationContext context = new StandardEvaluationContext();
         for (int len = 0; len < params.length; len++) {
             context.setVariable(params[len], arguments[len]);
         }
+        // key表达式
         String spel = annotation.key();
+        // 执行cache的条件
+        String condition = annotation.condition();
+        // 检查条件,不符合条件直接返回
+        if (!checkCondition(condition, context)) {
+            return proceed(pjp);
+        }
+
         long ttl = annotation.ttl();
 
         if (StringUtils.isEmpty(spel)) {
             log.warn("[cache异常] 未配置key class={} method={}", targetClass.getName(), methodName);
-            return pjp.proceed();
+            return proceed(pjp);
         }
         Expression expression = parser.parseExpression(spel);
+        // 拼接缓存key
         String key = expression.getValue(context).toString();
-        String cacheName = annotation.cacheName() + ":" + key;
+        String cacheNamePrefix = annotation.cacheName();
+        String cacheName = cacheNamePrefix + ":" + key;
 
         if (log.isDebugEnabled()) {
             log.debug("[尝试获取缓存] class:{} method:{}", targetClass.getSimpleName(), methodName);
         }
-
-        String type = targetClass.getName() + "_" + methodName;
+        // 缓存类型,用于计算缓存命中率
+        String type = cacheNamePrefix;
         // 计算总次数
         hitRateManger.addSum(type);
         Object cache = iCacheManager.getCache(cacheName, returnType);
@@ -98,7 +100,7 @@ public class CacheAspect {
         }
         log.info("[未获取到cache] key={} hitRate={} allHitRate={} sum={}",
                 cacheName, hitRateManger.getHitRate(type), hitRateManger.getHitRate(), hitRateManger.getSum(type));
-        Object proceed = pjp.proceed();
+        Object proceed = proceed(pjp);
         if (proceed == null) {
             return null;
         }
@@ -112,4 +114,6 @@ public class CacheAspect {
         }
         return proceed;
     }
+
+
 }

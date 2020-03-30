@@ -30,4 +30,9 @@ public class ConcurrentMapCacheManager implements ICacheManager<String> {
         setCache(cacheName, cache);
         return true;
     }
+
+    @Override
+    public boolean delCache(String cacheName) {
+        return map.remove(cacheName) != null;
+    }
 }

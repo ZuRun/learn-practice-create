@@ -32,10 +32,10 @@ public class CacheAspectTest {
         for (int i = 0; i < 100; i++) {
             ReqDto reqDto = new ReqDto().setCode(0)
                     .setTraceId(traceId)
-                    .setData(new ReqDto.Data().setDCode(1).setReqData("test"));
+                    .setData(new ReqDto.Data().setReqData("test"));
 
             for (int j = 0; j < 10; j++) {
-                reqDto.getData().setAccount(i + ":" + j);
+                reqDto.getData().setAccount(i + ":" + j).setDCode(j);
                 RespDto respDto = aspectService.test(reqDto, "shit");
                 Assert.assertTrue(traceId.equals(respDto.getTraceId()));
             }
@@ -47,8 +47,8 @@ public class CacheAspectTest {
                     .setData(new ReqDto.Data().setDCode(1).setReqData("test"));
 
             for (int j = 0; j < 10; j++) {
-                reqDto.getData().setAccount(i + ":" + j);
-                RespDto respDto = aspectService.test2(reqDto, "shit");
+                reqDto.getData().setAccount(i + ":" + j).setDCode(j);
+                RespDto respDto = aspectService.test(reqDto, "shit");
                 Assert.assertTrue(traceId.equals(respDto.getTraceId()));
             }
         }

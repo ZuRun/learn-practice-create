@@ -1,21 +1,21 @@
 package cn.zull.lpc.common.cache.annotation;
 
 import java.lang.annotation.*;
-import java.util.concurrent.TimeUnit;
 
 /**
+ * 根据条件删除缓存
+ * <p>
  * 注意,以下场景此注解不生效
  * 1. 不能加在静态方法上
  * 2. 被同一个类中方法调用时
  *
  * @author zurun
- * @date 2020/3/25 18:10:50
+ * @date 2020/3/30 10:02:46
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Cacheable {
-
+public @interface CacheEvict {
     /**
      * 暂时不考虑多个的情况,如有需要再行添加
      *
@@ -38,11 +38,9 @@ public @interface Cacheable {
     String condition() default "";
 
     /**
-     * 默认过期时间 30分钟
+     * 是否在方法执行前删除
      *
      * @return
      */
-    long ttl() default 30;
-
-    TimeUnit timeUnit() default TimeUnit.MINUTES;
+    boolean beforeInvocation() default true;
 }

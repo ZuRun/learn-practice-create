@@ -19,4 +19,6 @@ public interface ICacheManager<K> {
     boolean setCache(K cacheName, Object cache);
 
     boolean setCache(K cacheName, Object cache, long ttl, TimeUnit timeUnit);
+
+    boolean delCache(K cacheName);
 }

@@ -19,7 +19,7 @@ public class AspectService {
         return methodInnerCache(reqDto, source);
     }
 
-    @Cacheable(cacheName = "u", key = "#reqDto.traceId + ':' + #reqDto.data.account")
+    @Cacheable(cacheName = "u", key = "#reqDto.traceId + ':' + #reqDto.data.account", condition = "#reqDto.data.dCode > 5")
     public RespDto test(ReqDto reqDto, String source) {
         return methodInnerCache(reqDto, source);
     }
