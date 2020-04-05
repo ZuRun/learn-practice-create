@@ -167,7 +167,8 @@ public abstract class AbstractRocketMqConsumer {
             StringBuffer sb = new StringBuffer();
             stringSet.forEach(s -> sb.append(s).append(" || "));
             String rocketMqTags = sb.toString();
-            mqPushConsumer.subscribe(rocketMqTopic, rocketMqTags, this::consumer);
+            mqPushConsumer.subscribe(rocketMqTopic, "*", this::consumer);
+//            mqPushConsumer.subscribe(rocketMqTopic, rocketMqTags, this::consumer);
         });
 
         this.isStarted = true;

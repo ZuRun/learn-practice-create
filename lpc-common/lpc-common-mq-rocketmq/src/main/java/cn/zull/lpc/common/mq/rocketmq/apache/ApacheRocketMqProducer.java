@@ -41,7 +41,7 @@ public class ApacheRocketMqProducer<T extends Message> implements IMqProducer<T>
 
     @Override
     public IMqSendResult send(ConsumerTag tag, String keys, String body, Consumer<IMessageExt> consumer) {
-        Message message = new Message(tag.getTopic(), tag.getTag(), StringUtils.getBytesUtf8(body));
+        Message message = new Message(tag.getTopic(), tag.getTag(), keys, StringUtils.getBytesUtf8(body));
         IMessageExt messageExt = new ApacheMessageExt(message);
         consumer.accept(messageExt);
         try {
@@ -56,7 +56,7 @@ public class ApacheRocketMqProducer<T extends Message> implements IMqProducer<T>
     @Override
     public IMqSendResult send(ConsumerTag tag, String keys, String body) {
         try {
-            Message message = new Message(tag.getTopic(), tag.getTag(), StringUtils.getBytesUtf8(body));
+            Message message = new Message(tag.getTopic(), tag.getTag(), keys, StringUtils.getBytesUtf8(body));
             SendResult sendResult = this.producer.send(message);
             return new ApacheSendResult(sendResult);
         } catch (Exception e) {

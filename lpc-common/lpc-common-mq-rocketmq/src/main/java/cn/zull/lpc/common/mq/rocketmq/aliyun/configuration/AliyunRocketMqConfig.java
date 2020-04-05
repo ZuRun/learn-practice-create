@@ -3,7 +3,6 @@ package cn.zull.lpc.common.mq.rocketmq.aliyun.configuration;
 
 import cn.zull.lpc.common.mq.core.IMqProducer;
 import cn.zull.lpc.common.mq.core.IMqPushConsumer;
-import cn.zull.lpc.common.mq.rocketmq.RocketMqClient;
 import cn.zull.lpc.common.mq.rocketmq.aliyun.AliyunRocketMqProducer;
 import cn.zull.lpc.common.mq.rocketmq.aliyun.AliyunRocketMqPushConsumer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019/1/27 19:55:34
  */
 @Configuration
-@ConditionalOnExpression("${lpc.mq.rocketmq.client:apache}==" + RocketMqClient.ALIYUN)
+@ConditionalOnExpression("'${lpc.mq.rocketmq.client:apache}'.equals('aliyun')")
 public class AliyunRocketMqConfig {
     @Value("${lpc.mq.rocketmq.aliyun.accessKey}")
     private String accessKey;
