@@ -19,6 +19,8 @@
         <module>lpc-common-redis-redisson</module>
         <module>lpc-common-cache</module>
         <module>lpc-common-nacos</module>
+        <module>lpc-common-mq</module>
+        <module>lpc-common-mq-rocketmq</module>
     </modules>
 
 </project>

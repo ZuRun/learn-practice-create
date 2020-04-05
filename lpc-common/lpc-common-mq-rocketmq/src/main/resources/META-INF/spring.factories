@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.zull.lpc.common.mq.rocketmq.configuration.RocketMqConfig
