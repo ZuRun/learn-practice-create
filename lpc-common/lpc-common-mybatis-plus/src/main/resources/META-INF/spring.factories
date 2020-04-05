@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.zull.common.mybatis.plus.config.MybatisPlusConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.zull.lpc.common.mybatis.plus.config.MybatisPlusConfiguration
