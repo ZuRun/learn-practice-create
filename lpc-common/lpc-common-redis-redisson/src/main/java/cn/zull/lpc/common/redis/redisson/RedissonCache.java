@@ -1,6 +1,6 @@
 package cn.zull.lpc.common.redis.redisson;
 
-import cn.zull.lpc.common.redis.core.IRedisCache;
+import cn.zull.lpc.common.redis.core.StringRedisCache;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.*;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/10/18 15:35:31
  */
 @Slf4j
-public class RedissonCache implements IRedisCache<String, String, String> {
+public class RedissonCache implements StringRedisCache {
     final RedissonClient redissonClient;
 
     public RedissonCache(RedissonClient redissonClient) {
