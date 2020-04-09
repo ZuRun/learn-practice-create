@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author zurun
  * @date 2020/4/3 11:13:35
@@ -23,8 +26,14 @@ public class LettuceCacheTest {
 
     @Test
     public void test() throws InterruptedException {
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 1; i++) {
             redisCache.get("test:" + i);
+            Map<String, String> map = new HashMap<>(16);
+            map.put("a", "aa");
+            map.put("b", null);
+            map.put("c", "empty");
+            map.put("d", "");
+            redisCache.hSet("test:s", map);
             System.out.println("---------------------------" + i);
             Thread.sleep(10L);
         }

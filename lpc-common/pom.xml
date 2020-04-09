@@ -22,6 +22,7 @@
         <module>lpc-common-redis-lettuce</module>
         <module>lpc-common-mq</module>
         <module>lpc-common-mq-rocketmq</module>
+        <module>lpc-common-redis-jedis</module>
     </modules>
 
 </project>

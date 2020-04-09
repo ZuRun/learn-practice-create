@@ -1,8 +1,6 @@
-package cn.zull.lpc.common.redis.lettuce;
+package cn.zull.lpc.common.redis.jedis;
 
 import cn.zull.lpc.common.redis.core.StringRedisCache;
-import io.lettuce.core.RedisException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Collection;
@@ -13,14 +11,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author zurun
- * @date 2020/4/3 10:57:53
+ * @date 2020/4/9 10:50:32
  */
-@Slf4j
-public class LettuceCache implements StringRedisCache {
+public class JedisCache implements StringRedisCache {
+
     private final RedisTemplate<String, String> redisTemplate;
 
-
-    public LettuceCache(RedisTemplate<String, String> redisTemplate) {
+    public JedisCache(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -31,61 +28,43 @@ public class LettuceCache implements StringRedisCache {
 
     @Override
     public long pttl(String key) {
-        return redisTemplate.getExpire(key);
+        return 0;
     }
 
     @Override
     public long incr(String key) {
-//        Long increment = redisTemplate.opsForValue().increment(key);
-//        if (increment == null) {
-//            // when used in pipeline / transaction.
-//            throw new RedisException("increment失败 key=" + key);
-//        }
-//        return increment;
         return 0;
     }
 
     @Override
     public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        return null;
     }
 
     @Override
     public void set(String key, String value) {
-        redisTemplate.opsForValue().set(key, value);
+
     }
 
     @Override
     public void set(String key, String value, long expirationTime, TimeUnit unit) {
-        redisTemplate.opsForValue().set(key, value, expirationTime, unit);
+
     }
 
     @Override
     public boolean setNx(String key, String value) {
-        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(key, value);
-        if (setIfAbsent == null) {
-            // when used in pipeline / transaction.
-            throw new RedisException("setNx失败 key=" + key + " ; value=" + value);
-        }
-        return setIfAbsent;
+        return false;
     }
 
     @Override
     public boolean setNx(String key, String value, long expirationTime, TimeUnit unit) {
-//        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(key, value, expirationTime, unit);
-//        if (setIfAbsent == null) {
-//            // when used in pipeline / transaction.
-//            throw new RedisException("setNx失败 key=" + key + " ; value=" + value);
-//        }
-//        return setIfAbsent;
-        return true;
+        return false;
     }
 
     @Override
     public String hGet(String key, String hashKey) {
         return null;
     }
-
 
     @Override
     public Map<String, String> hGetMap(String key, String... hashKey) {
@@ -104,7 +83,7 @@ public class LettuceCache implements StringRedisCache {
 
     @Override
     public void hSet(String key, Map<String, String> map) {
-         redisTemplate.opsForHash().putAll(key, map);
+
     }
 
     @Override
