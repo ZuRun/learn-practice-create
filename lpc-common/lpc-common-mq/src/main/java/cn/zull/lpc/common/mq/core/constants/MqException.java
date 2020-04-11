@@ -10,6 +10,11 @@ import cn.zull.lpc.common.basis.exception.LpcRuntimeException;
  * @date 2018/10/31 01:06:20
  */
 public class MqException extends LpcRuntimeException {
+
+    public MqException(Throwable cause, IMessage errCode) {
+        super(cause, errCode);
+    }
+
     public MqException(String errMsg) {
         super(ErrorCode.mq.DEFAULT_MQ_PROVIDER_ERROR, errMsg);
     }

@@ -12,6 +12,7 @@
         <module>lpc-common</module>
         <module>lpc-practice-spring</module>
         <module>lpc-learn-basic</module>
+        <module>lpc-practice-mybatis</module>
     </modules>
 
     <properties>

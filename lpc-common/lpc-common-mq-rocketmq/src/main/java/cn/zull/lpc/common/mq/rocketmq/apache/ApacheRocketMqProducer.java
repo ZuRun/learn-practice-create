@@ -61,7 +61,7 @@ public class ApacheRocketMqProducer<T extends Message> implements IMqProducer<T>
             return new ApacheSendResult(sendResult);
         } catch (Exception e) {
             log.error("[send msg error] : eName:{} msg:{}", e.getClass().getSimpleName(), e.getMessage());
-            throw new MqException(ErrorCode.mq.MQ_SEND_FAILD);
+            throw new MqException(e, ErrorCode.mq.MQ_SEND_FAILD);
         }
     }
 

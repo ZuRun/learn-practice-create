@@ -25,8 +25,12 @@ public class MqTest1 {
 
     @Test
     public void producer() {
-        String key = UUIDUtils.simpleUUID();
-        IMqSendResult send = producer.send(TagTest.TEST_1, key, key + "_body");
-        log.info("key:{} msgId:{} status:{}", key, send.getMsgId(), send.getSendStatus());
+        int count = 10000;
+        for (int i = 0; i < count; i++) {
+            String key = UUIDUtils.simpleUUID();
+            IMqSendResult send = producer.send(TagTest.TEST_1, key, key + "_body");
+            log.info("key:{} msgId:{} status:{}", key, send.getMsgId(), send.getSendStatus());
+        }
+
     }
 }

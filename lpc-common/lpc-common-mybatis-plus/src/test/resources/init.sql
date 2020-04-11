@@ -1,0 +1,26 @@
+-- 初始化表
+CREATE TABLE `t_device_info` (
+  `id` varchar(32) NOT NULL COMMENT '主键',
+  `name` varchar(32) NOT NULL COMMENT '设备原始名称',
+  `platform` varchar(32) NOT NULL COMMENT '平台英文名称，用于唯一标识，如mcloud',
+  `model_id` varchar(32) NOT NULL COMMENT '设备型号标识',
+  `device_id` varchar(34) NOT NULL COMMENT '设备id',
+  `statistic_device_id` varchar(34) NOT NULL COMMENT '临时统计的设备id，绑定后不会改变',
+  `platform_device_id` varchar(255) NOT NULL COMMENT '设备原始id',
+  `ctei` varchar(32) DEFAULT NULL COMMENT '设备的CTEI码',
+  `ctei_state` tinyint(1) DEFAULT NULL COMMENT 'CTEI码状态 0：失效 1：有效',
+  `mac` varchar(32) DEFAULT NULL COMMENT '设备的mac地址，不带冒号，大写',
+  `mac_state` tinyint(1) DEFAULT NULL COMMENT 'mac地址状态 0：失效 1：有效',
+  `imei` varchar(32) DEFAULT NULL COMMENT '设备的imei码',
+  `imei_state` tinyint(1) DEFAULT NULL COMMENT '设备的imei码 0：失效 1：有效',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_device_id` (`device_id`) USING BTREE,
+  KEY `index_platform` (`platform`) USING BTREE,
+  KEY `index_model` (`model_id`) USING BTREE,
+  KEY `index_platform_device_id` (`platform_device_id`) USING BTREE,
+  KEY `index_ctei` (`ctei`) USING BTREE,
+  KEY `index_mac` (`mac`) USING BTREE,
+  KEY `index_imei` (`imei`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
