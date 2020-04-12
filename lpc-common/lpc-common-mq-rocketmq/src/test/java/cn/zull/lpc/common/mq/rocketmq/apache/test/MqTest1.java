@@ -24,9 +24,13 @@ public class MqTest1 {
     private RocketMqProducer producer;
 
     @Test
-    public void producer() {
-        String key = UUIDUtils.simpleUUID();
-        IMqSendResult send = producer.send(TagTest.TEST_1, key, key + "_body");
-        log.info("key:{} msgId:{} status:{}", key, send.getMsgId(), send.getSendStatus());
+    public void producer() throws InterruptedException {
+        for (int i = 0; i < 20000; i++) {
+            String key = UUIDUtils.simpleUUID();
+            IMqSendResult send = producer.send(TagTest.TEST_1, key, key + "_body");
+            log.info("key:{} msgId:{} status:{}", key, send.getMsgId(), send.getSendStatus());
+            Thread.sleep(10L);
+        }
+
     }
 }
