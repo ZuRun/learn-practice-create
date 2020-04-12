@@ -1,6 +1,6 @@
 package cn.zull.lpc.common.redis.redisson.configuration;
 
-import cn.zull.lpc.common.redis.core.IRedisCache;
+import cn.zull.lpc.common.redis.core.StringRedisCache;
 import cn.zull.lpc.common.redis.redisson.RedissonCache;
 import lombok.Getter;
 import org.redisson.Redisson;
@@ -78,7 +78,7 @@ public class RedissonConfig {
      * @return
      */
     @Bean("redissonCache")
-    public IRedisCache redissonCache(RedissonClient redissonClient) {
+    public StringRedisCache redissonCache(RedissonClient redissonClient) {
         return new RedissonCache(redissonClient);
     }
 

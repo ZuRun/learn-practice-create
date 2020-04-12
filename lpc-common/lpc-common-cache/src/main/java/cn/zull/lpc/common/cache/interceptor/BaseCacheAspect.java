@@ -4,23 +4,17 @@ import cn.zull.lpc.common.cache.manager.ICacheManager;
 import cn.zull.lpc.common.cache.monitor.HitRateManger;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zurun
  * @date 2020/3/30 10:07:59
  */
 @Slf4j
-@Aspect
-@Component
-@ConditionalOnBean(ICacheManager.class)
 class BaseCacheAspect {
     protected final ExpressionParser parser = new SpelExpressionParser();
     protected final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();

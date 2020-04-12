@@ -6,11 +6,14 @@ import cn.zull.lpc.common.cache.monitor.HitRateManger;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -20,6 +23,9 @@ import java.lang.reflect.Method;
  * @date 2020/3/26 10:08:12
  */
 @Slf4j
+@Aspect
+@Component
+@ConditionalOnClass(ICacheManager.class)
 public class CacheAbleAspect extends BaseCacheAspect {
 
     public CacheAbleAspect(ICacheManager<String> iCacheManager, HitRateManger hitRateManger) {
