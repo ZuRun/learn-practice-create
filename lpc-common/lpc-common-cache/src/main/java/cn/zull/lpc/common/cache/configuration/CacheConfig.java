@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("cn.zull.lpc.common.cache")
 public class CacheConfig {
 
-    @Bean
+    @Bean("iCacheManager")
     public ICacheManager iCacheManager() {
         return new ConcurrentMapCacheManager();
 //        return new RedisCacheManager();

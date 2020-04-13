@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.zull.lpc.common.redis.lettuce.configuration.LettuceConfig
