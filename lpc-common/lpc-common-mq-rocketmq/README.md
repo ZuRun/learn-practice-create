@@ -14,3 +14,6 @@ lpc.mq.rocketmq.producer.enable=false
 # 提供方 组名,默认PG_DEFAULT
 lpc.mq.rocketmq.producer.group=PG_DEFAULT
 ```
+
+## todo 
+需要灵活对外暴露mq配置
