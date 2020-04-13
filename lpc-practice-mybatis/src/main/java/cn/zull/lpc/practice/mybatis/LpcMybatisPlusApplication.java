@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2020/4/9 15:52:54
  */
 @SpringBootApplication
-@MapperScan("cn.zull.lpc.practice.mybatis.mapper")
+@MapperScan({"cn.zull.lpc.practice.mybatis.mapper", "cn.zull.lpc.practice.mybatis.mapper.test"})
 public class LpcMybatisPlusApplication {
     public static void main(String[] args) {
         SpringApplication.run(LpcMybatisPlusApplication.class, args);

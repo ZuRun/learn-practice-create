@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.zull.lpc.practice.mybatis.mapper.test.TestDeviceInfoMapper">
+    <insert id="insert" parameterType="cn.zull.lpc.practice.mybatis.entity.test.TestDeviceInfo">
+        INSERT INTO `test_device_info` (id,did,`desc`,num)
+        VALUE (#{id},#{did},#{desc},#{num})
+    </insert>
+
+    <select id="getByDid" resultType="cn.zull.lpc.practice.mybatis.mapper.test.TestDeviceInfoMapper">
+        select * from `test_device_info` d
+        <where>
+            d.did=#{did}
+        </where>
+    </select>
+</mapper>

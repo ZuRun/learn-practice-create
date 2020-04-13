@@ -105,7 +105,7 @@ public abstract class AbstractRocketMqConsumer {
         if (RocketMqResult.SUCCESS.equals(result)) {
             return true;
         }
-        return true;
+        return false;
     }
 
     /**

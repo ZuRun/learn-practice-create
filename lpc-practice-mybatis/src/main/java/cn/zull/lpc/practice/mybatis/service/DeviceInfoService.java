@@ -3,6 +3,7 @@ package cn.zull.lpc.practice.mybatis.service;
 import cn.zull.lpc.practice.mybatis.mapper.DeviceInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -18,6 +19,7 @@ public class DeviceInfoService {
     DeviceInfoMapper deviceInfoMapper;
 
 
+    @Transactional(rollbackFor = Exception.class)
     public long getDeviceCount() {
         return deviceInfoMapper.getCount();
     }
