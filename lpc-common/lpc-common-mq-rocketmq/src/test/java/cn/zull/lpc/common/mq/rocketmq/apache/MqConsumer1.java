@@ -28,6 +28,11 @@ public class MqConsumer1 extends AbstractRocketMqConsumer {
         String keys = messageExt.getKeys();
         String body = StringUtils.newStringUtf8(messageExt.getBody());
         log.info("[consumer] keys:{} msgId:{} body:{}", keys, msgId, body);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return biFunction.apply(true, true);
     }
 
