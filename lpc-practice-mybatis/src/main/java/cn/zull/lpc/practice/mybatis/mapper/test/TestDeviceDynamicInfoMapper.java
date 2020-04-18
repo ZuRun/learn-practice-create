@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2020/4/13 17:42:00
  */
 @Mapper
-public class TestDeviceDynamicInfoMapper {
+public interface TestDeviceDynamicInfoMapper {
 
-    int insert(TestDeviceDynamicInfo deviceDynamicInfo)
+    int insert(TestDeviceDynamicInfo deviceDynamicInfo);
 }

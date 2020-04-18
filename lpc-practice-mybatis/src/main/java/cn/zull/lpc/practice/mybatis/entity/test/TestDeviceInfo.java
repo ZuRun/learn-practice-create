@@ -16,4 +16,5 @@ public class TestDeviceInfo {
     private String did;
     private String desc;
     private Integer sum;
+    private Integer v;
 }

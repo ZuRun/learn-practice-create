@@ -15,4 +15,5 @@ public class TestDeviceDynamicInfo {
     private Long id;
     private String did;
     private String devName;
+    private Integer v;
 }

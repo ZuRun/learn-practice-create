@@ -11,7 +11,10 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface TestDeviceInfoMapper {
 
-    TestDeviceInfoMapper getByDid(@Param("did") String did);
+    TestDeviceInfo getByDid(@Param("did") String did);
 
     int insert(TestDeviceInfo deviceInfo);
+
+    int updateDeviceInfoWithVersion(TestDeviceInfo deviceInfo);
+//    int updateDeviceInfo(@Param("did") String did, @Param("desc") String desc, @Param("sum") Integer sum,);
 }

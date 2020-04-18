@@ -1,7 +1,7 @@
-package cn.zull.lpc.practice.spring.service.cache;
+package cn.zull.lpc.practice.spring.cache.service;
 
 import cn.zull.lpc.common.basis.utils.UUIDUtils;
-import cn.zull.lpc.practice.spring.dto.CacheRespDTO;
+import cn.zull.lpc.practice.spring.cache.dto.CacheRespDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

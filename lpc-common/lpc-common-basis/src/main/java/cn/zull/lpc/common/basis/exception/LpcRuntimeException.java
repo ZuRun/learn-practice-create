@@ -22,27 +22,27 @@ public class LpcRuntimeException extends RuntimeException {
     private Integer errCode;
 
 
-    protected LpcRuntimeException(Throwable cause, IMessage errCode) {
+    public LpcRuntimeException(Throwable cause, IMessage errCode) {
         super(cause);
         this.errCode = errCode.getErrCode();
     }
 
-    protected LpcRuntimeException(Integer errCode, String errMsg) {
+    public LpcRuntimeException(Integer errCode, String errMsg) {
         super(errMsg);
         this.errCode = errCode;
     }
 
-    protected LpcRuntimeException(String errMsg) {
+    public LpcRuntimeException(String errMsg) {
         super(errMsg);
         errCode = ErrorCode.common.DEFAULT_EXCEPTION_CODE.getErrCode();
     }
 
-    protected LpcRuntimeException(IMessage errCode) {
+    public LpcRuntimeException(IMessage errCode) {
         super(errCode.getErrMsg());
         this.errCode = errCode.getErrCode();
     }
 
-    protected LpcRuntimeException(IMessage errCode, String errMsg) {
+    public LpcRuntimeException(IMessage errCode, String errMsg) {
         super(errMsg);
         this.errCode = errCode.getErrCode();
     }

@@ -1,4 +1,4 @@
-package cn.zull.lpc.practice.spring.configuration;
+package cn.zull.lpc.practice.spring.cache.configuration;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;

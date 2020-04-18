@@ -1,8 +1,11 @@
 package cn.zull.lpc.practice.mybatis.service;
 
+import cn.zull.lpc.common.basis.exception.LpcRuntimeException;
+import cn.zull.lpc.practice.mybatis.entity.test.TestDeviceDynamicInfo;
 import cn.zull.lpc.practice.mybatis.entity.test.TestDeviceInfo;
 import cn.zull.lpc.practice.mybatis.mapper.DeviceDynamicInfoMapper;
 import cn.zull.lpc.practice.mybatis.mapper.DeviceInfoMapper;
+import cn.zull.lpc.practice.mybatis.mapper.test.TestDeviceDynamicInfoMapper;
 import cn.zull.lpc.practice.mybatis.mapper.test.TestDeviceInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class TransactionTestService {
     DeviceDynamicInfoMapper deviceDynamicInfoMapper;
     @Autowired
     TestDeviceInfoMapper testDeviceInfoMapper;
+    @Autowired
+    TestDeviceDynamicInfoMapper testDeviceDynamicInfoMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public void test1(String name) {
@@ -35,13 +40,54 @@ public class TransactionTestService {
         System.out.println(deviceInfo);
     }
 
-    @Transactional
-    public void insertTest(String did) {
+    /**
+     * @param did
+     * @param exception 是否报异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void insertTest1(String did, boolean exception) {
         TestDeviceInfo deviceInfo = new TestDeviceInfo()
                 .setDid(did)
                 .setDesc("test:" + did)
                 .setSum(0);
-        testDeviceInfoMapper.insert(deviceInfo);
+        System.out.println("deviceInfo_insert_" + testDeviceInfoMapper.insert(deviceInfo));
+
+        if (exception) {
+            throw new LpcRuntimeException("主动中断");
+        }
+
+        TestDeviceDynamicInfo dynamicInfo = new TestDeviceDynamicInfo()
+                .setDid(did)
+                .setDevName("设备名_" + did);
+        System.out.println("deviceDynamicInfo_insert_" + testDeviceDynamicInfoMapper.insert(dynamicInfo));
     }
 
+    /**
+     * 更新数据(检查版本号)
+     *
+     * @param did
+     * @param desc
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int updateWithVersion(String did, String desc) {
+        TestDeviceInfo deviceInfo = testDeviceInfoMapper.getByDid(did);
+        deviceInfo.setSum(deviceInfo.getSum() + 1);
+        deviceInfo.setDesc(desc);
+        int result = testDeviceInfoMapper.updateDeviceInfoWithVersion(deviceInfo);
+        System.out.println("r___" + result);
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update2(String did, String desc) {
+        TestDeviceInfo deviceInfo = testDeviceInfoMapper.getByDid(did);
+        deviceInfo.setSum(deviceInfo.getSum() + 1);
+        deviceInfo.setDesc(desc);
+        for (int i = 0; i < 10; i++) {
+            int result = testDeviceInfoMapper.updateDeviceInfoWithVersion(deviceInfo);
+            System.out.println("___" + result);
+
+        }
+    }
 }

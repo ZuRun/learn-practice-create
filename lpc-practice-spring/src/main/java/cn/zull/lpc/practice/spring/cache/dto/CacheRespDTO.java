@@ -1,4 +1,4 @@
-package cn.zull.lpc.practice.spring.dto;
+package cn.zull.lpc.practice.spring.cache.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

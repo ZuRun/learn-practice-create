@@ -30,7 +30,7 @@ public class MqTest1 {
             String key = UUIDUtils.simpleUUID();
             IMqSendResult send = producer.send(TagTest.TEST_1, key, key + "_body");
             log.info("key:{} msgId:{} status:{}", key, send.getMsgId(), send.getSendStatus());
-            Thread.sleep(10L);
+//            Thread.sleep(10L);
 
         }
 

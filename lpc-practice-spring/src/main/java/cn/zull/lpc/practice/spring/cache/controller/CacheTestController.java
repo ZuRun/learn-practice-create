@@ -1,8 +1,8 @@
-package cn.zull.lpc.practice.spring.controller.cache;
+package cn.zull.lpc.practice.spring.cache.controller;
 
 import cn.zull.lpc.common.basis.model.Result;
-import cn.zull.lpc.practice.spring.dto.CacheRespDTO;
-import cn.zull.lpc.practice.spring.service.cache.CacheTestService;
+import cn.zull.lpc.practice.spring.cache.dto.CacheRespDTO;
+import cn.zull.lpc.practice.spring.cache.service.CacheTestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
