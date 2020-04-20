@@ -1,7 +1,8 @@
 package cn.zull.lpc.practice.spring.service.cache;
 
 import cn.zull.lpc.practice.spring.SpringTestApplication;
-import cn.zull.lpc.practice.spring.dto.CacheRespDTO;
+import cn.zull.lpc.practice.spring.cache.dto.CacheRespDTO;
+import cn.zull.lpc.practice.spring.cache.service.CacheTestService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
