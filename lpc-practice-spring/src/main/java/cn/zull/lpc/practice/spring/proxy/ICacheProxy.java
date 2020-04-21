@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 /**
  * 动态代理
@@ -17,7 +18,10 @@ import java.lang.reflect.Method;
  * @date 2020/4/20 11:33:20
  */
 public class ICacheProxy implements MethodInterceptor {
-    public static boolean data1 = true;
+    /**
+     * 是否是数据源1
+     */
+    public static Supplier<Boolean> supplier = () -> true;
     private DataSource1Cache instance1 = new DataSource1Cache();
     private DataSource2Cache instance2 = new DataSource2Cache();
 
@@ -47,7 +51,7 @@ public class ICacheProxy implements MethodInterceptor {
 
     @Override
     public Object intercept(Object target, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        if (data1) {
+        if (supplier.get()) {
             Class clz = instance1.getClass();
             Method method1 = clz.getDeclaredMethod(method.getName(), method.getParameterTypes());
             return method1.invoke(instance1, args);
