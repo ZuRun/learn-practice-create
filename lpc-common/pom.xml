@@ -23,6 +23,8 @@
         <module>lpc-common-mq</module>
         <module>lpc-common-mq-rocketmq</module>
         <module>lpc-common-redis-jedis</module>
+        <module>lpc-common-es</module>
+        <module>lpc-common-kafka</module>
     </modules>
 
 </project>

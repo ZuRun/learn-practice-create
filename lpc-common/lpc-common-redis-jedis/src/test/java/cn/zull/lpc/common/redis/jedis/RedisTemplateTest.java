@@ -39,5 +39,8 @@ public class RedisTemplateTest {
 
         System.out.println(iRedisCache.hGetAll("test:s"));
 
+        iRedisCache.sAdd("test:s:s", "");
+        iRedisCache.sAdd("test:s:s", "null");
+        iRedisCache.sAdd("test:s:s", null);
     }
 }

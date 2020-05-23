@@ -39,6 +39,10 @@ public class NativeJedisCmdTest {
 
 
         try {
+            cluster.sadd("test:s:s", "");
+            cluster.sadd("test:s:s", null);
+            cluster.sadd("test:s:s", "-");
+
             Map<String, String> map = new HashMap<>(16);
             map.put("a", "aa");
             map.put("b", null);
