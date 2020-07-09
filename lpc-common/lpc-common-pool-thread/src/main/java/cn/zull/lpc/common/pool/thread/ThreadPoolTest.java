@@ -7,8 +7,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author zurun
  * @date 2020/7/1 17:08:53
  */
+//@Slf4j
 public class ThreadPoolTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(10);
         ThreadFactory factory = new ThreadFactory() {
 
             AtomicInteger threadNumber = new AtomicInteger(0);
@@ -21,8 +23,24 @@ public class ThreadPoolTest {
         };
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 11, 20, TimeUnit.SECONDS, new LinkedBlockingQueue<>(17), factory, new ThreadPoolExecutor.CallerRunsPolicy());
 
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> {
-            System.out.println("[]" + threadPoolExecutor.getPoolSize());
-        });
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            System.out.println("[]" + threadPoolExecutor.getPoolSize() + " | " + threadPoolExecutor.getActiveCount());
+        }, 0, 1, TimeUnit.SECONDS);
+        for (int i = 0; i < 9; i++) {
+            Thread t = new Thread(() -> {
+                while (true) {
+                    threadPoolExecutor.execute(() -> {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            });
+            t.start();
+        }
+
+        countDownLatch.await();
     }
 }
