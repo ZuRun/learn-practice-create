@@ -21,8 +21,8 @@ public class ByteBufferTest {
         // byteBuffer对堆内存的影响
 //        test.test1();
         // 一直申请新的堆外内存
-//        test.incrementLoop();
-        test.t();
+        test.incrementLoop();
+//        test.t();
     }
 
     /**
@@ -60,12 +60,12 @@ public class ByteBufferTest {
     public void incrementLoop() {
         List<ByteBuffer> list = new ArrayList<>(2048);
         int i = 0;
-        int step = 10;
+        int step = 1;
         while (true) {
-            ByteBuffer buffer = ByteBuffer.allocateDirect(10 * 1024 * 1024);
+            ByteBuffer buffer = ByteBuffer.allocateDirect(step * 1024 * 1024);
             buffer.get();
             // 添加到list列表中,此引用就不会被释放了,导致堆外内存溢出
-//            list.add(buffer);
+            list.add(buffer);
             i = i + step;
             System.out.println("增加堆外内存 共:" + i + "MB");
             try {
@@ -84,14 +84,20 @@ public class ByteBufferTest {
 
         Map<String, String> map = new HashMap<>(16);
         map.put("name", "jared.zu");
+        map.put("c", "组");
         String json = gson.toJson(map);
         System.out.println("json=" + json);
-        byteBuffer.put(json.getBytes());
+        byte[] bytes = json.getBytes();
+        int length = bytes.length;
+        byteBuffer.put(bytes);
         System.out.println("-");
 
-        int length = json.length();
         byte[] get = new byte[length];
+        int mark = byteBuffer.position();
+        byteBuffer.position(0);
+        // 此方法会从position位置开始拷贝length长度季节
         byteBuffer.get(get, 0, length);
+        byteBuffer.position(mark);
         System.out.println(":" + StringUtils.newStringUtf8(get));
         System.out.println("---");
 

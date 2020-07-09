@@ -38,11 +38,11 @@ public class RandomUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(randomNum(6));
-        System.out.println(getRangeNum(8999999,8000000));
+//        System.out.println(randomNum(6));
+//        System.out.println(getRangeNum(8999999,8000000));
 
-        /*for (int i = 0; i < 100; i++) {
-            System.out.println(randomNumber(2));
-        }*/
+        for (int i = 0; i < 100; i++) {
+            System.out.println(getRangeNum(0,5));
+        }
     }
 }
