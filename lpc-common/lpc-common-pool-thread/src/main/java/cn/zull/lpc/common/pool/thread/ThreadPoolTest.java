@@ -21,17 +21,26 @@ public class ThreadPoolTest {
                 return thread;
             }
         };
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 11, 20, TimeUnit.SECONDS, new LinkedBlockingQueue<>(17), factory, new ThreadPoolExecutor.CallerRunsPolicy());
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 111, 20, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(100), factory, new ThreadPoolExecutor.CallerRunsPolicy());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            System.out.println("[]" + threadPoolExecutor.getPoolSize() + " | " + threadPoolExecutor.getActiveCount());
+            System.out.println("[]" + threadPoolExecutor.getActiveCount() + " | " +
+                    threadPoolExecutor.getCompletedTaskCount() + " | " +
+                    threadPoolExecutor.getQueue().size() + " | "
+            );
         }, 0, 1, TimeUnit.SECONDS);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 22; i++) {
             Thread t = new Thread(() -> {
                 while (true) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     threadPoolExecutor.execute(() -> {
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -40,6 +49,8 @@ public class ThreadPoolTest {
             });
             t.start();
         }
+        Thread.sleep(15000L);
+        threadPoolExecutor.setMaximumPoolSize(13);
 
         countDownLatch.await();
     }

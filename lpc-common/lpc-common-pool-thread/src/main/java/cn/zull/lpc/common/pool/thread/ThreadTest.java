@@ -6,6 +6,7 @@ package cn.zull.lpc.common.pool.thread;
  */
 public class ThreadTest {
     public static void main(String[] args) throws InterruptedException {
+        System.out.println(1<<30);
         System.out.println("--start--");
         Thread t = new Thread(() -> {
             System.out.println("[t1] !!!");
