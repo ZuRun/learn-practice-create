@@ -81,7 +81,6 @@ public class ByteBufferTest {
     public void t() {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(10 * 1024 * 1024);
         Gson gson = new Gson();
-
         Map<String, String> map = new HashMap<>(16);
         map.put("name", "jared.zu");
         map.put("c", "组");

@@ -1,0 +1,18 @@
+
+dubbo:
+  service.version: 1.0.0
+  application:
+    id: dubbo-lpc-practice-dubbo-provider
+    name: dubbo-lpc-practice-dubbo-provider
+  # scan.basePackages: com.iflytek.iot.test.migrate.redis.write.rservice.WriteRedisDataRemoteService
+  protocol:
+    id: dubbo
+    name: dubbo
+    #port: 9311
+#    serialization: kryo
+  registry:
+    #    client: nacos
+    #    address: nacos://172.31.129.137:8848
+    address: N/A
+    timeout: 5000
+#  reference.check: true

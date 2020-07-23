@@ -1,0 +1,23 @@
+dubbo:
+  service.version: 1.0.0
+  application:
+    id: dubbo-lpc-practice-dubbo-consumer
+    name: dubbo-lpc-practice-dubbo-consumer
+  scan.basePackages: cn.zull.lpc.practice.dubbo.provider.rservice
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 19351
+#    serialization: kryo
+    # 限制报文大小的
+#    payload: 50
+  provider:
+    threads: 300
+    # 限制报文大小的
+#    payload: 100
+  registry:
+    #    client: nacos
+    address: N/A
+#    address: nacos://172.31.129.137:8848
+#    timeout: 5000
+#  reference.check: false

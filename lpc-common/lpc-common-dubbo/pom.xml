@@ -9,9 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lpc-common-mybatis-plus</artifactId>
+    <artifactId>lpc-common-dubbo</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>0.2.0</version>
+        </dependency>
         <dependency>
             <groupId>cn.zull.lpc</groupId>
             <artifactId>lpc-common-basis</artifactId>
@@ -21,21 +26,6 @@
             <groupId>cn.zull.lpc</groupId>
             <artifactId>lpc-common-monitor</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis_plus_plus}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-version}</version>
         </dependency>
     </dependencies>
 </project>

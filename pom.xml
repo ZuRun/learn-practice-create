@@ -13,6 +13,9 @@
         <module>lpc-practice-spring</module>
         <module>lpc-learn-basic</module>
         <module>lpc-practice-mybatis</module>
+        <module>lpc-practice-dubbo-consumer</module>
+        <module>lpc-practice-basic</module>
+        <module>lpc-practice-dubbo-provider</module>
     </modules>
 
     <properties>
