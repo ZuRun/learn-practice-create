@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="myLog" class="cn.zull.lpc.practice.log2kafka.log.appender.MyAppender">
+        <!--A.根据设置过滤日志，此处设置的是info-->
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+<!--            <level>INFO</level>-->
+<!--        </filter>-->
+<!--        &lt;!&ndash;B.自定义设置处理策略&ndash;&gt;-->
+<!--        <myPolicy class="cn.zull.lpc.practice.log2kafka.log.MyAppender">-->
+<!--            <appName>monitor</appName>-->
+<!--        </myPolicy>-->
+        <!--日志打印格式，m：message-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            <pattern>%m</pattern>-->
+<!--        </layout>-->
+    </appender>
+    <!--C.设置日志级别为info-->
+    <!--additivity=true，表示将日志输出出来，false则不会输出日志，但是appender仍可接收到输出的日志message-->
+<!--    <logger name="myLogger" level="info" additivity="true">-->
+<!--        &lt;!&ndash;指定自定义的appender来处理&ndash;&gt;-->
+<!--        <appender-ref ref="myLog"/>-->
+<!--    </logger>-->
+    <root level="INFO">
+        <!--<appender-ref ref="FILEERROR" />-->
+        <!--<appender-ref ref="FILEWARN" />-->
+        <!--<appender-ref ref="FILEINFO" />-->
+
+        <!-- 生产环境将请stdout,testfile去掉 -->
+        <appender-ref ref="myLog" />
+    </root>
+</configuration>

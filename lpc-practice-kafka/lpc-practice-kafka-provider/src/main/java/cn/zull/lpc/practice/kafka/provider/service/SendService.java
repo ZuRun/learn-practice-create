@@ -1,6 +1,5 @@
 package cn.zull.lpc.practice.kafka.provider.service;
 
-import cn.zull.lpc.common.basis.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,8 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class SendService implements CommandLineRunner {
     @Autowired
-    KafkaProducer kafkaProducer;
-    @Value("${thread.size:100}")
+    KafkaProducer<String, String> kafkaProducer;
+    @Value("${thread.size:1}")
     private Integer threadSize;
     @Value("${test.future.enable:false}")
     private Boolean enableFuture;
@@ -44,14 +44,16 @@ public class SendService implements CommandLineRunner {
         for (int j = 0; j < threadSize; j++) {
             int z = j;
             executorService.execute(() -> {
+                int i = 0;
                 while (true) {
-                    ProducerRecord producerRecord = new ProducerRecord(topic, z + "_" + UUIDUtils.simpleUUID());
+                    ProducerRecord producerRecord = new ProducerRecord(topic, z + "_" + i + "_" + (LocalDateTime.now().toString()));
+                    i++;
                     Future<RecordMetadata> future = kafkaProducer.send(producerRecord);
                     sum.getAndIncrement();
                     if (enableFuture) {
                         try {
                             RecordMetadata recordMetadata = future.get();
-//                        log.info("[z] {}", JsonUtils.toJSONString(recordMetadata));
+//                            log.info("[z] {}", JsonUtils.toJSONString(recordMetadata));
 
                         } catch (InterruptedException e) {
                             e.printStackTrace();
