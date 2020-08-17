@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lpc-practice-log2kafka</artifactId>
+    <artifactId>lpc-practice-kafka2es</artifactId>
 
     <dependencies>
         <dependency>
@@ -19,12 +19,12 @@
         </dependency>
         <dependency>
             <groupId>cn.zull.lpc</groupId>
-            <artifactId>lpc-common-basis</artifactId>
+            <artifactId>lpc-common-es</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.zull.lpc</groupId>
-            <artifactId>lpc-common-monitor</artifactId>
+            <artifactId>lpc-common-basis</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,26 +24,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LogConsumer2Kafka {
     private volatile boolean start = false;
 
-    @Value("${log2kafka.consumer.batchSize:50}")
+    @Value("${lpc.biz.log.consumer.batchSize:50}")
     private int batchSize;
+
+    @Value("${lpc.biz.log.consumer.thread:1}")
+    private int consumerThread;
+
     @Autowired
     private KafkaProducer<String, String> kafkaProducer;
-    AtomicInteger sum = new AtomicInteger(0);
 
-    {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            int s = sum.getAndSet(0);
-            System.out.println(s);
-        }, 0, 1, TimeUnit.SECONDS);
-    }
+    public static AtomicInteger sum = new AtomicInteger(0);
+
 
     @PostConstruct
     public synchronized void start() {
         if (start) {
             return;
         }
-        new Thread(runnable, "log2kafka-consumer-1").start();
-//        new Thread(runnable, "log2kafka-consumer-2").start();
+        for (int i = 0; i < consumerThread; i++) {
+            new Thread(runnable, "log2kafka-consumer-" + consumerThread).start();
+        }
         start = true;
     }
 
@@ -60,7 +59,7 @@ public class LogConsumer2Kafka {
                     }
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("线程中断 : " + Thread.currentThread().getName()+"  剩余未消费长度:"+Log2kafkaQueue.queueSize());
                 Thread.currentThread().interrupt();
             }
             if (list.size() > 0) {

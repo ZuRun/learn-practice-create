@@ -18,6 +18,7 @@
         <module>lpc-practice-dubbo-provider</module>
         <module>lpc-practice-kafka</module>
         <module>lpc-practice-log2kafka</module>
+        <module>lpc-practice-kafka2es</module>
     </modules>
 
     <properties>

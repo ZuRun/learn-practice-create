@@ -1,4 +1,4 @@
-package cn.zull.lpc.practice.kafka.consumer;
+package cn.zull.lpc.practice.kafka2es.consumer;
 
 import cn.zull.lpc.common.basis.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -6,30 +6,24 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
 /**
  * @author zurun
- * @date 2020/8/10 16:23:37
+ * @date 2020/8/17 10:06:04
  */
 @Slf4j
-@Service
-public class KafkaConsumerTest implements CommandLineRunner {
+@Component
+public class LogComsumer implements CommandLineRunner {
     @Autowired
     KafkaConsumer<String, String> kafkaConsumer;
 
     @Override
     public void run(String... args) throws Exception {
         new Thread(() -> {
-//            Deserializer<String> deserializer = new StringDeserializer();
-//            Map<String, String> properties = new HashMap<>(16);
-//            properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.31.129.144:9092");
-//            properties.put(ConsumerConfig.GROUP_ID_CONFIG, "test1");
-//            KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer(properties, deserializer, deserializer);
             try {
-//                kafkaConsumer.subscribe(Collections.singleton(topic));
                 while (true) {
                     ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(5000));
                     records.iterator().forEachRemaining(record -> {

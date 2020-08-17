@@ -22,6 +22,6 @@ public class MyAppender extends UnsynchronizedAppenderBase {
                 .setMessage(loggingEvent.getFormattedMessage())
                 ;
         Log2kafkaQueue.add(logBean);
-        System.out.println(logBean);
+//        System.out.println(logBean);
     }
 }
