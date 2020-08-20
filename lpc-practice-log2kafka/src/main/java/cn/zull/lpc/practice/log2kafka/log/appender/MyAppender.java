@@ -2,7 +2,7 @@ package cn.zull.lpc.practice.log2kafka.log.appender;
 
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
-import cn.zull.lpc.practice.log2kafka.bean.LogBean;
+import cn.zull.lpc.practice.log2kafka.model.LogModel;
 import cn.zull.lpc.practice.log2kafka.log.Log2kafkaQueue;
 
 /**
@@ -13,9 +13,9 @@ public class MyAppender extends UnsynchronizedAppenderBase {
     @Override
     protected void append(Object eventObject) {
         LoggingEvent loggingEvent = (LoggingEvent) eventObject;
-        LogBean logBean = new LogBean()
+        LogModel logBean = new LogModel()
                 .setTName(loggingEvent.getThreadName())
-                .setTimestamp(loggingEvent.getTimeStamp())
+                .setTimestamp(String.valueOf(loggingEvent.getTimeStamp()))
                 .setLevel(loggingEvent.getLevel().levelStr)
                 .setClassName(loggingEvent.getLoggerName())
                 .setTraceId(loggingEvent.getMDCPropertyMap().get("traceId"))

@@ -1,6 +1,6 @@
 package cn.zull.lpc.practice.log2kafka.log;
 
-import cn.zull.lpc.practice.log2kafka.bean.LogBean;
+import cn.zull.lpc.practice.log2kafka.model.LogModel;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -18,7 +18,7 @@ public class Log2kafkaQueue {
     private static final AtomicInteger addCount = new AtomicInteger(0);
     private static final AtomicInteger takeCount = new AtomicInteger(0);
     // 队列长度,1<<18为26万
-    private static final BlockingQueue<LogBean> queue = new ArrayBlockingQueue(1 << 18);
+    private static final BlockingQueue<LogModel> queue = new ArrayBlockingQueue(1 << 18);
 
     static {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
@@ -28,7 +28,7 @@ public class Log2kafkaQueue {
         }, 0, 1, TimeUnit.SECONDS);
     }
 
-    public static boolean add(LogBean logBean) {
+    public static boolean add(LogModel logBean) {
         boolean bl = queue.offer(logBean);
         addCount.getAndIncrement();
         if (!bl) {
@@ -37,8 +37,8 @@ public class Log2kafkaQueue {
         return bl;
     }
 
-    public static LogBean take(long time, TimeUnit timeUnit) throws InterruptedException {
-        LogBean logBean = queue.poll(time, timeUnit);
+    public static LogModel take(long time, TimeUnit timeUnit) throws InterruptedException {
+        LogModel logBean = queue.poll(time, timeUnit);
         if (logBean != null) {
             takeCount.getAndIncrement();
         }

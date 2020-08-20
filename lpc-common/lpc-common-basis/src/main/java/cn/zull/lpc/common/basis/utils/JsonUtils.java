@@ -2,6 +2,8 @@ package cn.zull.lpc.common.basis.utils;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 /**
  * json工具类
  *
@@ -13,5 +15,9 @@ public class JsonUtils {
 
     public static String toJSONString(Object obj) {
         return gson.toJson(obj);
+    }
+
+    public static List json2List(String jsonString) {
+        return gson.fromJson(jsonString, List.class);
     }
 }

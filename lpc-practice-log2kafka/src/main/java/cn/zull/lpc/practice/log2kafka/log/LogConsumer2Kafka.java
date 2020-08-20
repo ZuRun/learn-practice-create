@@ -1,7 +1,7 @@
 package cn.zull.lpc.practice.log2kafka.log;
 
 import cn.zull.lpc.common.basis.utils.JsonUtils;
-import cn.zull.lpc.practice.log2kafka.bean.LogBean;
+import cn.zull.lpc.practice.log2kafka.model.LogModel;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -49,10 +49,10 @@ public class LogConsumer2Kafka {
 
     Runnable runnable = () -> {
         while (!Thread.currentThread().isInterrupted()) {
-            List<LogBean> list = new ArrayList<>(20);
+            List<LogModel> list = new ArrayList<>(20);
             try {
                 for (int i = 0; i < batchSize; i++) {
-                    LogBean logbean = Log2kafkaQueue.take(10, TimeUnit.MILLISECONDS);
+                    LogModel logbean = Log2kafkaQueue.take(10, TimeUnit.MILLISECONDS);
 
                     if (logbean != null) {
                         list.add(logbean);
@@ -68,7 +68,7 @@ public class LogConsumer2Kafka {
         }
     };
 
-    private void write2Kafka(List<LogBean> list) {
+    private void write2Kafka(List<LogModel> list) {
         final String topic = "lpc_log";
         ProducerRecord producerRecord = new ProducerRecord(topic, JsonUtils.toJSONString(list));
         Future<RecordMetadata> future = kafkaProducer.send(producerRecord);

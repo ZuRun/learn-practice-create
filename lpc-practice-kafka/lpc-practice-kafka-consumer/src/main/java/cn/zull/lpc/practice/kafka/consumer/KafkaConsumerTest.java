@@ -1,6 +1,5 @@
 package cn.zull.lpc.practice.kafka.consumer;
 
-import cn.zull.lpc.common.basis.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -33,8 +32,8 @@ public class KafkaConsumerTest implements CommandLineRunner {
                 while (true) {
                     ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(5000));
                     records.iterator().forEachRemaining(record -> {
-
-                        System.out.println(record.topic() + "_" + record.key() + "_" + JsonUtils.toJSONString(record));
+                        System.out.print(".");
+//                        System.out.println(record.topic() + "_" + record.key() + "_" + JsonUtils.toJSONString(record));
                     });
                 }
             } finally {

@@ -11,6 +11,11 @@
 
     <artifactId>lpc-practice-kafka2es</artifactId>
 
+    <dependencyManagement>
+        <dependencies>
+
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>cn.zull.lpc</groupId>

@@ -1,4 +1,4 @@
-package cn.zull.lpc.practice.log2kafka.bean;
+package cn.zull.lpc.practice.log2kafka.model;
 
 /**
  * @author zurun
