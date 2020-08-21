@@ -27,11 +27,20 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class KafkaBearConfig {
-    @Value("${lpc.kafka.serverAddr}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String serverAddr;
-    //    private String serverAddr = "172.31.129.144:9092";
+
     @Value("${lpc.kafka.consumer.topic:,}")
     private String topic;
+
+    @Value("${spring.kafka.consumer.max-poll-records:300}")
+    private int maxPollRecords;
+
+    @Value("${spring.kafka.consumer.fetch-min-size:100}")
+    private int fetchMinSize;
+
+    @Value("${spring.kafka.consumer.group-id:}")
+    private String groupId;
 
     @Bean
     @ConditionalOnExpression(value = "${lpc.kafka.producer.enable:false}")
@@ -60,10 +69,16 @@ public class KafkaBearConfig {
             log.warn("[topic长度为0] topic:{}", topic);
             throw new IllegalArgumentException("topic异常:" + topic);
         }
+        if (StringUtils.isEmpty(groupId)) {
+            log.warn("[group-id为空]");
+        }
         Deserializer<String> deserializer = new StringDeserializer();
         Map<String, String> properties = new HashMap<>(16);
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddr);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "test1");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, String.valueOf(maxPollRecords));
+        //todo 待确认
+        properties.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, String.valueOf(fetchMinSize));
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer(properties, deserializer, deserializer);
         kafkaConsumer.subscribe(topics);
 

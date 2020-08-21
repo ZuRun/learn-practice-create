@@ -36,7 +36,7 @@ public class Write2es {
     @Value("${es.write.batchSize:20}")
     private Integer esBatchSubmitSize = 20;
 
-    public void batchInsertEs(String index, List<Map<String, Object>> batchDocs) {
+    public void batchInsertEs(String index, List<Map<String, String>> batchDocs) {
         bulkInsertDocs(index, batchDocs);
     }
 
@@ -47,14 +47,14 @@ public class Write2es {
      * @param index     索引
      * @param batchDocs 日志内容
      */
-    private void bulkInsertDocs(String index, List<Map<String, Object>> batchDocs) {
+    private void bulkInsertDocs(String index, List<Map<String, String>> batchDocs) {
         String time = String.valueOf(System.currentTimeMillis());
         if (CollectionUtils.isEmpty(batchDocs)) {
             return;
         }
         boolean hasFail;
         BulkRequest bulkRequest = new BulkRequest();
-        for (Map<String, Object> batchDoc : batchDocs) {
+        for (Map<String, String> batchDoc : batchDocs) {
             // 写入es时间
             batchDoc.put("t_w2es", time);
 //            log.info("写es数据_"+JsonUtils.toJSONString(batchDoc));

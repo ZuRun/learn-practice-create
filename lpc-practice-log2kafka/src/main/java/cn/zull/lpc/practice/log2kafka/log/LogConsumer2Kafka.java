@@ -33,6 +33,7 @@ public class LogConsumer2Kafka {
     @Autowired
     private KafkaProducer<String, String> kafkaProducer;
 
+
     public static AtomicInteger sum = new AtomicInteger(0);
 
 
@@ -72,6 +73,7 @@ public class LogConsumer2Kafka {
         final String topic = "lpc_log";
         ProducerRecord producerRecord = new ProducerRecord(topic, JsonUtils.toJSONString(list));
         Future<RecordMetadata> future = kafkaProducer.send(producerRecord);
+//        ListenableFuture<SendResult<String, String>> send = kafkaProducer.send(topic, JsonUtils.toJSONString(list));
         sum.getAndIncrement();
 
     }

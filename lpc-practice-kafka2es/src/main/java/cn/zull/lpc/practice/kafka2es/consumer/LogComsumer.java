@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -33,17 +31,20 @@ public class LogComsumer implements CommandLineRunner {
     private int threadSize;
 
     private final AtomicInteger sum = new AtomicInteger(0);
+    ThreadPoolExecutor executorService;
 
-    {
+    @PostConstruct
+    public void pre() {
+        executorService = new ThreadPoolExecutor(threadSize, threadSize, 1, TimeUnit.MINUTES,
+                new LinkedBlockingQueue(1000));
+
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            System.out.println(System.currentTimeMillis() + " 消费条数:" + sum.getAndSet(0));
+            System.out.println(System.currentTimeMillis() + " active: " + executorService.getActiveCount() + " 消费条数:" + sum.getAndSet(0));
         }, 0, 1, TimeUnit.SECONDS);
 
     }
-
     @Override
     public void run(String... args) throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(threadSize);
 
         new Thread(() -> {
             try {
@@ -54,21 +55,18 @@ public class LogComsumer implements CommandLineRunner {
                     }
                     CountDownLatch countDownLatch = new CountDownLatch(records.count());
                     System.out.println(records.count());
-                    Thread.sleep(1000);
+//                    Thread.sleep(1000);
                     records.iterator().forEachRemaining(record -> {
-                        executorService.execute(() -> {
+                        executorService.execute(()->{
                             try {
                                 String msg = record.value();
-
-                                List<Map<String, Object>> list = JsonUtils.json2List(msg);
+                                List<Map<String, String>> list = JsonUtils.json2List(msg);
                                 sum.getAndAdd(list.size());
                                 write2es.batchInsertEs("lpc_log", list);
-//                        System.out.println(record.topic() + "_" + record.key() + "_" + list);
-                            } finally {
+                            }finally {
                                 countDownLatch.countDown();
                             }
                         });
-
                     });
                     countDownLatch.await();
                 }
