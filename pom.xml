@@ -20,6 +20,7 @@
         <module>lpc-practice-log2kafka</module>
         <module>lpc-practice-kafka2es</module>
         <module>lpc-practice-es</module>
+        <module>lpc-practice-test</module>
     </modules>
 
     <properties>
