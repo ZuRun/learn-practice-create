@@ -25,7 +25,6 @@
         <module>lpc-common-redis-jedis</module>
         <module>lpc-common-es</module>
         <module>lpc-common-kafka</module>
-        <module>lpc-common-pool-thread</module>
         <module>lpc-common-monitor</module>
         <module>lpc-common-dubbo</module>
     </modules>
