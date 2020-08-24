@@ -33,6 +33,9 @@ public class KafkaBearConfig {
     @Value("${lpc.kafka.consumer.topic:,}")
     private String topic;
 
+    @Value("${lpc.kafka.consumer.size:10}")
+    private int consumerSize;
+
     @Value("${spring.kafka.consumer.max-poll-records:300}")
     private int maxPollRecords;
 
@@ -55,34 +58,39 @@ public class KafkaBearConfig {
 
     @Bean
     @ConditionalOnExpression(value = "${lpc.kafka.consumer.enable:false}")
-    public KafkaConsumer kafkaConsumer() {
-        String[] split = topic.split(",");
-        List<String> topics = new ArrayList<>(split.length);
-        for (int i = 0; i < split.length; i++) {
-            String s = split[i];
-            if (StringUtils.isEmpty(s)) {
-                continue;
+    public KafkaConsumerCluster kafkaConsumer() {
+        List<KafkaConsumer<String, String>> list = new ArrayList<>();
+        for (int j = 0; j < consumerSize; j++) {
+            String[] split = topic.split(",");
+            List<String> topics = new ArrayList<>(split.length);
+            for (int i = 0; i < split.length; i++) {
+                String s = split[i];
+                if (StringUtils.isEmpty(s)) {
+                    continue;
+                }
+                topics.add(s);
             }
-            topics.add(s);
+            if (topics.size() == 0) {
+                log.warn("[topic长度为0] topic:{}", topic);
+                throw new IllegalArgumentException("topic异常:" + topic);
+            }
+            if (StringUtils.isEmpty(groupId)) {
+                log.warn("[group-id为空]");
+            }
+            Deserializer<String> deserializer = new StringDeserializer();
+            Map<String, String> properties = new HashMap<>(16);
+            properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddr);
+            properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+            properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, String.valueOf(maxPollRecords));
+            //todo 待确认
+//            properties.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, String.valueOf(fetchMinSize));
+            KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer(properties, deserializer, deserializer);
+            kafkaConsumer.subscribe(topics);
+            list.add(kafkaConsumer);
         }
-        if (topics.size() == 0) {
-            log.warn("[topic长度为0] topic:{}", topic);
-            throw new IllegalArgumentException("topic异常:" + topic);
-        }
-        if (StringUtils.isEmpty(groupId)) {
-            log.warn("[group-id为空]");
-        }
-        Deserializer<String> deserializer = new StringDeserializer();
-        Map<String, String> properties = new HashMap<>(16);
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddr);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, String.valueOf(maxPollRecords));
-        //todo 待确认
-        properties.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, String.valueOf(fetchMinSize));
-        KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer(properties, deserializer, deserializer);
-        kafkaConsumer.subscribe(topics);
-
-        return kafkaConsumer;
+        KafkaConsumerCluster cluster = new KafkaConsumerCluster();
+        cluster.setConsumerList(list);
+        return cluster;
     }
 
 }

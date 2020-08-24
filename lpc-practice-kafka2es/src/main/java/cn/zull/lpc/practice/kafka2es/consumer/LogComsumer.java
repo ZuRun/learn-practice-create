@@ -1,6 +1,7 @@
 package cn.zull.lpc.practice.kafka2es.consumer;
 
 import cn.zull.lpc.common.basis.utils.JsonUtils;
+import cn.zull.lpc.common.kafka.config.KafkaConsumerCluster;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -26,7 +27,8 @@ public class LogComsumer implements CommandLineRunner {
     @Autowired
     Write2es write2es;
     @Autowired
-    KafkaConsumer<String, String> kafkaConsumer;
+//    KafkaConsumer<String, String> kafkaConsumer;
+    KafkaConsumerCluster cluster;
     @Value("${lpc.biz.w2es.thread.size:50}")
     private int threadSize;
 
@@ -43,39 +45,44 @@ public class LogComsumer implements CommandLineRunner {
         }, 0, 1, TimeUnit.SECONDS);
 
     }
+
     @Override
     public void run(String... args) throws Exception {
-
-        new Thread(() -> {
-            try {
-                while (true) {
-                    ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(5000));
-                    if (records.isEmpty()) {
-                        return;
-                    }
-                    CountDownLatch countDownLatch = new CountDownLatch(records.count());
-                    System.out.println(records.count());
+        List<KafkaConsumer<String, String>> consumerList = cluster.getConsumerList();
+        for (int i = 0; i < consumerList.size(); i++) {
+            KafkaConsumer kafkaConsumer = consumerList.get(i);
+            new Thread(() -> {
+                try {
+                    while (true) {
+                        ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(5000));
+                        if (records.isEmpty()) {
+                            return;
+                        }
+                        CountDownLatch countDownLatch = new CountDownLatch(records.count());
+                        System.out.println(records.count());
 //                    Thread.sleep(1000);
-                    records.iterator().forEachRemaining(record -> {
-                        executorService.execute(()->{
-                            try {
-                                String msg = record.value();
-                                List<Map<String, String>> list = JsonUtils.json2List(msg);
-                                sum.getAndAdd(list.size());
-                                write2es.batchInsertEs("lpc_log", list);
-                            }finally {
-                                countDownLatch.countDown();
-                            }
+                        records.iterator().forEachRemaining(record -> {
+                            executorService.execute(() -> {
+                                try {
+                                    String msg = record.value();
+                                    List<Map<String, String>> list = JsonUtils.json2List(msg);
+                                    sum.getAndAdd(list.size());
+//                                    write2es.batchInsertEs("lpc_log", list);
+                                } finally {
+                                    countDownLatch.countDown();
+                                }
+                            });
                         });
-                    });
-                    countDownLatch.await();
+                        countDownLatch.await();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                } finally {
+                    kafkaConsumer.close();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            } finally {
-                kafkaConsumer.close();
-            }
-        }, "kafka-consumer-thread").start();
+            }, "kafka-consumer-thread-" + i).start();
+        }
     }
+
 }
