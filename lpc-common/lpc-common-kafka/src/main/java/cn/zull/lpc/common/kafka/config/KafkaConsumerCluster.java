@@ -15,5 +15,9 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 public class KafkaConsumerCluster {
-    private List<KafkaConsumer<String,String>> consumerList;
+    private List<KafkaConsumer<String, String>> consumerList;
+
+    public void close() {
+        consumerList.forEach(KafkaConsumer::close);
+    }
 }

@@ -11,6 +11,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -31,28 +32,33 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Service
 public class TestWriteSpeedService implements CommandLineRunner {
+    @Value("${lpc.p.es.index}")
+    private String index;
+    @Value("${lpc.p.es.poolSize:100}")
+    private int poolSize;
+    @Value("${lpc.p.es.batchSize:200}")
+    private int batchSize;
+
     @Autowired
     RestHighLevelClient restHighLevelClient;
-    private final int poolSize = 100;
     private final AtomicInteger sum = new AtomicInteger(0);
-    ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(poolSize);
 
-    {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            System.out.println(System.currentTimeMillis() + " active: " + executorService.getActiveCount() + " 消费条数:" + sum.getAndSet(0));
-        }, 0, 1, TimeUnit.SECONDS);
-    }
 
     @Override
     public void run(String... args) throws Exception {
+        ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(poolSize);
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            System.out.println(System.currentTimeMillis() + " active: " + executorService.getActiveCount() + " 消费条数:" + sum.getAndSet(0));
+        }, 0, 1, TimeUnit.SECONDS);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < poolSize; i++) {
             executorService.execute(() -> {
                 while (true) {
                     String uuid = UUIDUtils.simpleUUID();
                     long now = System.currentTimeMillis();
-                    List<Map<String, String>> list = new ArrayList<>(100);
-                    for (int j = 0; j < 100; j++) {
+                    int m = batchSize;
+                    List<Map<String, String>> list = new ArrayList<>(m);
+                    for (int j = 0; j < m; j++) {
                         LogModel logModel = new LogModel()
                                 .setClassName("cn.zull.lpc.practice.log2kafka.controller.LogController")
                                 .setLevel("info")
@@ -64,8 +70,8 @@ public class TestWriteSpeedService implements CommandLineRunner {
                         Map map = JsonUtils.json2Map(json);
                         list.add(map);
                     }
-                    bulkInsertDocs("lpc_log", list);
-                    sum.addAndGet(100);
+                    bulkInsertDocs(index, list);
+                    sum.addAndGet(m);
                 }
             });
         }

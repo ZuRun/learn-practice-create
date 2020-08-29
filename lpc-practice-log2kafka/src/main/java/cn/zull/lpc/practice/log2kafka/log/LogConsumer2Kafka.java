@@ -36,9 +36,13 @@ public class LogConsumer2Kafka {
 
     public static AtomicInteger sum = new AtomicInteger(0);
 
+    public LogConsumer2Kafka() {
+        System.out.println("===");
+    }
 
     @PostConstruct
     public synchronized void start() {
+        System.out.println("--------------s--");
         if (start) {
             return;
         }
@@ -53,10 +57,10 @@ public class LogConsumer2Kafka {
             List<LogModel> list = new ArrayList<>(20);
             try {
                 for (int i = 0; i < batchSize; i++) {
-                    LogModel logbean = Log2kafkaQueue.take(10, TimeUnit.MILLISECONDS);
+                    LogModel logModel = Log2kafkaQueue.take(10, TimeUnit.MILLISECONDS);
 
-                    if (logbean != null) {
-                        list.add(logbean);
+                    if (logModel != null) {
+                        list.add(logModel);
                     }
                 }
             } catch (InterruptedException e) {

@@ -56,7 +56,7 @@ public class LogComsumer implements CommandLineRunner {
                     while (true) {
                         ConsumerRecords<String, String> records = kafkaConsumer.poll(Duration.ofMillis(5000));
                         if (records.isEmpty()) {
-                            return;
+                            continue;
                         }
                         CountDownLatch countDownLatch = new CountDownLatch(records.count());
                         System.out.println(records.count());
@@ -67,7 +67,7 @@ public class LogComsumer implements CommandLineRunner {
                                     String msg = record.value();
                                     List<Map<String, String>> list = JsonUtils.json2List(msg);
                                     sum.getAndAdd(list.size());
-//                                    write2es.batchInsertEs("lpc_log", list);
+                                    write2es.batchInsertEs("iot_log_0", list);
                                 } finally {
                                     countDownLatch.countDown();
                                 }
@@ -76,9 +76,11 @@ public class LogComsumer implements CommandLineRunner {
                         countDownLatch.await();
                     }
                 } catch (InterruptedException e) {
+                    log.warn("[异常!] {}",e.getMessage());
                     e.printStackTrace();
                     Thread.currentThread().interrupt();
                 } finally {
+                    log.warn("[kafka消费线程结束!!!]");
                     kafkaConsumer.close();
                 }
             }, "kafka-consumer-thread-" + i).start();
