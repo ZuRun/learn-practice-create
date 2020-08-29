@@ -20,7 +20,7 @@ public class ElasticSearchConfig {
     private String hostlist;
 
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public RestHighLevelClient restHighLevelClient() {
         //解析hostlist配置信息
         String[] split = hostlist.split(",");

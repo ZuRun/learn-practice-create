@@ -45,7 +45,7 @@ public class KafkaBearConfig {
     @Value("${spring.kafka.consumer.group-id:}")
     private String groupId;
 
-    @Bean
+    @Bean(destroyMethod = "close")
     @ConditionalOnExpression(value = "${lpc.kafka.producer.enable:false}")
     public KafkaProducer<String, String> kafkaProducer() {
 
@@ -53,10 +53,11 @@ public class KafkaBearConfig {
         Map<String, String> properties = new HashMap<>(16);
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddr);
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer(properties, serializer, serializer);
+        kafkaProducer.close();
         return kafkaProducer;
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     @ConditionalOnExpression(value = "${lpc.kafka.consumer.enable:false}")
     public KafkaConsumerCluster kafkaConsumer() {
         List<KafkaConsumer<String, String>> list = new ArrayList<>();
