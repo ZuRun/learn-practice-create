@@ -59,7 +59,7 @@ public class LogComsumer implements CommandLineRunner {
                             return;
                         }
                         CountDownLatch countDownLatch = new CountDownLatch(records.count());
-                        System.out.println(records.count());
+//                        System.out.println(records.count());
 //                    Thread.sleep(1000);
                         records.iterator().forEachRemaining(record -> {
                             executorService.execute(() -> {
