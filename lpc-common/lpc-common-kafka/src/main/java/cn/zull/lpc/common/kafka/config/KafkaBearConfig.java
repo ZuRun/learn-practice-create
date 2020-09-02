@@ -27,7 +27,7 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class KafkaBearConfig {
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${lpc.kafka.bootstrap-servers}")
     private String serverAddr;
 
     @Value("${lpc.kafka.consumer.topic:,}")
@@ -53,7 +53,6 @@ public class KafkaBearConfig {
         Map<String, String> properties = new HashMap<>(16);
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddr);
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer(properties, serializer, serializer);
-        kafkaProducer.close();
         return kafkaProducer;
     }
 

@@ -30,7 +30,11 @@ public class ElasticSearchConfig {
             String item = split[i];
             httpHostArray[i] = new HttpHost(item.split(":")[0], Integer.parseInt(item.split(":")[1]), "http");
         }
-        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHostArray));
+//        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+//        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "zr123321ES"));
+        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHostArray)
+//                .setHttpClientConfigCallback(f-> f.setDefaultCredentialsProvider(credentialsProvider))
+        );
         log.info("已连成功连接最新版es 集群地址 host = {}", hostlist);
         return restHighLevelClient;
     }

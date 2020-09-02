@@ -65,7 +65,8 @@ public class TestWriteSpeedService implements CommandLineRunner {
                                 .setTName("http-nio-8080-exec-80")
                                 .setTraceId(uuid)
                                 .setTimestamp(String.valueOf(now))
-                                .setMessage("[tt]_" + uuid + "_" + uuid);
+//                                .setMessage("[tt]_" + uuid + "_" + uuid)
+                                .setMessage("[根据平台账号查询手机号]: 根据 key=iot:a:ac:" + uuid + " 从 redis 中查询的手机号为：tyAccount=15107777176");
                         String json = JsonUtils.toJSONString(logModel);
                         Map map = JsonUtils.json2Map(json);
                         list.add(map);
@@ -86,7 +87,8 @@ public class TestWriteSpeedService implements CommandLineRunner {
      * @param batchDocs 日志内容
      */
     private void bulkInsertDocs(String index, List<Map<String, String>> batchDocs) {
-        String time = String.valueOf(System.currentTimeMillis());
+        long now = System.currentTimeMillis();
+        String time = String.valueOf(now);
         if (CollectionUtils.isEmpty(batchDocs)) {
             return;
         }
@@ -107,13 +109,14 @@ public class TestWriteSpeedService implements CommandLineRunner {
 //            if (response.hasFailures()) {
 //                log.info("写入ES数据结果 response = {}", response);
 //            }
-            hasFail = response.hasFailures();
+//            hasFail = response.hasFailures();
         } catch (IOException e) {
             e.printStackTrace();
-            hasFail = true;
+//            hasFail = true;
         }
-        if (hasFail) {
-            log.warn("bulk insert ELS fail " + response.buildFailureMessage());
-        }
+        log.debug("[耗时] {}", System.currentTimeMillis() - now);
+//        if (hasFail) {
+//            log.warn("bulk insert ELS fail " + response.buildFailureMessage());
+//        }
     }
 }

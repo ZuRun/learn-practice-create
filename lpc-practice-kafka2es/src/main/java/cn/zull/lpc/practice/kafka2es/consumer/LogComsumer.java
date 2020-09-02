@@ -65,6 +65,7 @@ public class LogComsumer implements CommandLineRunner {
                             executorService.execute(() -> {
                                 try {
                                     String msg = record.value();
+                                    System.out.println(JsonUtils.toJSONString(record.headers()));
                                     List<Map<String, String>> list = JsonUtils.json2List(msg);
                                     sum.getAndAdd(list.size());
                                     write2es.batchInsertEs("iot_log_0", list);
