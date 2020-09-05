@@ -1,10 +1,12 @@
 package cn.zull.lpc.practice.kafka2es.consumer;
 
 import cn.zull.lpc.common.basis.utils.JsonUtils;
+import cn.zull.lpc.common.basis.utils.StringUtils;
 import cn.zull.lpc.common.kafka.config.KafkaConsumerCluster;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.header.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +30,7 @@ public class LogComsumer implements CommandLineRunner {
     Write2es write2es;
     @Autowired
 //    KafkaConsumer<String, String> kafkaConsumer;
-    KafkaConsumerCluster cluster;
+            KafkaConsumerCluster cluster;
     @Value("${lpc.biz.w2es.thread.size:50}")
     private int threadSize;
 
@@ -65,10 +67,14 @@ public class LogComsumer implements CommandLineRunner {
                             executorService.execute(() -> {
                                 try {
                                     String msg = record.value();
-                                    System.out.println(JsonUtils.toJSONString(record.headers()));
+                                    String version = null;
+                                    Header header = record.headers().lastHeader("_v");
+                                    if (header != null) {
+                                        version = StringUtils.newStringUtf8(header.value());
+                                    }
                                     List<Map<String, String>> list = JsonUtils.json2List(msg);
                                     sum.getAndAdd(list.size());
-                                    write2es.batchInsertEs("iot_log_0", list);
+                                    write2es.batchInsertEs("iot_log_0", version, list);
                                 } finally {
                                     countDownLatch.countDown();
                                 }
@@ -77,7 +83,7 @@ public class LogComsumer implements CommandLineRunner {
                         countDownLatch.await();
                     }
                 } catch (InterruptedException e) {
-                    log.warn("[异常!] {}",e.getMessage());
+                    log.warn("[异常!] {}", e.getMessage());
                     e.printStackTrace();
                     Thread.currentThread().interrupt();
                 } finally {
@@ -87,5 +93,4 @@ public class LogComsumer implements CommandLineRunner {
             }, "kafka-consumer-thread-" + i).start();
         }
     }
-
 }

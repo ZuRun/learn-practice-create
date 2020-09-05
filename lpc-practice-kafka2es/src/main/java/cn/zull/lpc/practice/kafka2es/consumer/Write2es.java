@@ -36,7 +36,7 @@ public class Write2es {
     @Value("${es.write.batchSize:20}")
     private Integer esBatchSubmitSize = 20;
 
-    public void batchInsertEs(String index, List<Map<String, String>> batchDocs) {
+    public void batchInsertEs(String index, String version, List<Map<String, String>> batchDocs) {
         bulkInsertDocs(index, batchDocs);
     }
 
