@@ -13,7 +13,6 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2020/8/22 21:22:50
  */
 @Slf4j
-@Service
+//@Service
 public class TestWriteSpeedService implements CommandLineRunner {
     @Value("${lpc.p.es.index}")
     private String index;
