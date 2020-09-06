@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -91,6 +92,14 @@ public class LogConsumer2Kafka {
         ProducerRecord producerRecord = new ProducerRecord(topic, null, null, null, JsonUtils.toJSONString(list), headers);
         Future<RecordMetadata> future = kafkaProducer.send(producerRecord);
 //        ListenableFuture<SendResult<String, String>> send = kafkaProducer.send(topic, JsonUtils.toJSONString(list));
+        try {
+            RecordMetadata recordMetadata = future.get();
+            recordMetadata.toString();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         sum.getAndIncrement();
 
     }
