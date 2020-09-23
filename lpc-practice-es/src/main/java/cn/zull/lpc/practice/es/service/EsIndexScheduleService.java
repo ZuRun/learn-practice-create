@@ -15,7 +15,6 @@ import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.rest.RestStatus;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -28,7 +27,7 @@ import java.util.*;
  * @date 2020/9/6 17:25:47
  */
 @Slf4j
-@Service
+//@Service
 public class EsIndexScheduleService implements CommandLineRunner {
 
     @Resource
