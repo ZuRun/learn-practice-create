@@ -51,6 +51,11 @@ public class Log2kafkaQueue {
 
     public static void main(String[] args) {
         System.out.println(1 << 18);
+        BlockingQueue<LogModel> queue = new ArrayBlockingQueue(10);
+        for (int i = 0; i < 20; i++) {
+            System.out.println(queue.offer(new LogModel().setTraceId("t" + i)));
+        }
+        System.out.println(queue.size());
     }
 
 }
