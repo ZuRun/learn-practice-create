@@ -22,6 +22,7 @@
         <module>lpc-practice-es</module>
         <module>lpc-practice-test</module>
         <module>lpc-practice-log</module>
+        <module>lpc-practice-transaction</module>
     </modules>
 
     <properties>
