@@ -42,7 +42,7 @@ public class RandomUtils {
 //        System.out.println(getRangeNum(8999999,8000000));
 
         for (int i = 0; i < 100; i++) {
-            System.out.println(getRangeNum(0,5));
+            System.out.println(randomNumber(100));
         }
     }
 }
