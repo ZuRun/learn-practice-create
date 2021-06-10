@@ -1,7 +1,5 @@
 package cn.zull.lpc.practice.mybatis.service.pool;
 
-import cn.zull.lpc.common.basis.utils.JsonUtils;
-import com.alibaba.druid.stat.DruidStatManagerFacade;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,7 @@ import java.util.Map;
 public class DruidMonitorService {
     public void getList() {
         System.out.println("-------start----------");
-        List<Map<String, Object>> dataSourceStatDataList = DruidStatManagerFacade.getInstance().getDataSourceStatDataList();
-        System.out.println(JsonUtils.toJSONString(dataSourceStatDataList));
+//        List<Map<String, Object>> dataSourceStatDataList = DruidStatManagerFacade.getInstance().getDataSourceStatDataList();
+//        System.out.println(JsonUtils.toJSONString(dataSourceStatDataList));
     }
 }

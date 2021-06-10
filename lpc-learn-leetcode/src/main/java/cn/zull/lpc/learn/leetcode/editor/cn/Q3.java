@@ -54,8 +54,8 @@ import java.util.Map;
 public class Q3 {
     public static void main(String[] args) {
         Solution solution = new Q3().new Solution();
-        System.out.println(solution.lengthOfLongestSubstring("a"));
-        System.out.println(solution.lengthOfLongestSubstring(" "));
+        System.out.println(solution.lengthOfLongestSubstring("tmmzuxt"));
+        System.out.println(solution.lengthOfLongestSubstring("abba"));
         System.out.println(solution.lengthOfLongestSubstring("abc"));
         System.out.println(solution.lengthOfLongestSubstring("aab"));
         System.out.println(solution.lengthOfLongestSubstring("abcabcbb"));
@@ -67,27 +67,24 @@ public class Q3 {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+
         public int lengthOfLongestSubstring(String s) {
-            char[] chars = s.toCharArray();
-            int length = chars.length;
-            if (length == 0) {
+            Map<Character, Integer> map = new HashMap<>();
+            int answer = 0;
+            if (s.length() == 0) {
                 return 0;
             }
-
-            int answer = 0;
-            Map<Character, Integer> map = new HashMap<>();
-            for (int start = 0, end = 0; end < length; end++) {
+            for (int start = 0, end = 0; end < s.length(); end++) {
                 char c = s.charAt(end);
                 if (map.containsKey(c)) {
-                    answer = Math.max(end + 1 - map.get(c), answer);
+                    start = Math.max(map.get(c) + 1, start);
                 }
-                map.put(c, end + 1);
-            }
-            if(answer==0){
-                return length;
+                answer = Math.max(end - start + 1, answer);
+                map.put(c, end);
             }
             return answer;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
