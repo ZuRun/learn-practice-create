@@ -2,7 +2,6 @@ package cn.zull.lpc.common.cache.manager;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class ConcurrentMapCacheManager implements ICacheManager<String> {
-    private final Map<String, Object> map = new ConcurrentHashMap(16);
+    private final ConcurrentHashMap<String, Object> map = new ConcurrentHashMap(16);
 
     @Override
     public <V> V getCache(String cacheName, Class<V> returnType) {

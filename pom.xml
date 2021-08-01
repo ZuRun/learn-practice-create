@@ -23,6 +23,8 @@
         <module>lpc-practice-test</module>
         <module>lpc-practice-log</module>
         <module>lpc-practice-transaction</module>
+        <module>lpc-practice-project-red-packet</module>
+        <module>lpc-learn-spring</module>
     </modules>
 
     <properties>
