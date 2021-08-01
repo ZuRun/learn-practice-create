@@ -1,5 +1,6 @@
 package cn.zull.lpc.practice.test.oom;
 
+import cn.zull.lpc.common.basis.utils.RandomUtils;
 import cn.zull.lpc.common.basis.utils.UUIDUtils;
 import cn.zull.lpc.practice.test.config.ITestSwitch;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class OomTest1 implements ITestSwitch {
 
     @Override
     public void run() {
-        LinkedList list=new LinkedList();
+        LinkedList list = new LinkedList();
         list.add("q");
         list.add("w");
         list.add("n");
@@ -68,5 +69,31 @@ public class OomTest1 implements ITestSwitch {
     @Data
     public static class TestItem2 {
         private String val;
+    }
+
+    private static int sum = 0;
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 100000000; i++) {
+            int s = RandomUtils.randomNumber(100);
+            char[] chars = new char[s * 1024];
+            f(chars);
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void vv(char[] chars) {
+        int i = chars.length;
+        if (i > 1) {
+            sum += i;
+        }
+    }
+
+    public static void f(char[] chars) {
+        vv(chars);
     }
 }

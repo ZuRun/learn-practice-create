@@ -28,6 +28,7 @@
         <module>lpc-common-monitor</module>
         <module>lpc-common-dubbo</module>
         <module>lpc-common-apollo</module>
+        <module>lpc-common-threadpool</module>
     </modules>
 
 </project>

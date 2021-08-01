@@ -25,6 +25,7 @@
         <module>lpc-practice-transaction</module>
         <module>lpc-practice-project-red-packet</module>
         <module>lpc-learn-spring</module>
+        <module>lpc-learn-leetcode</module>
     </modules>
 
     <properties>
