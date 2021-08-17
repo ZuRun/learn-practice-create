@@ -1,6 +1,7 @@
 package cn.zull.lpc.learn.spring.bean;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author jared.zu
@@ -8,6 +9,14 @@ import lombok.Data;
  */
 @Data
 public class Student {
+//    @Autowired
+    Teacher teacher;
+
     private Long id;
     private String name;
+
+    public void print() {
+        System.out.println("student:" + name);
+        teacher.print();
+    }
 }

@@ -12,6 +12,9 @@ public class SpringXmlService {
         ClassPathXmlApplicationContext xmlContext = new ClassPathXmlApplicationContext("spring.xml");
         Student student = xmlContext.getBean(Student.class);
         student.setName("name_test");
+        student.print();
+
         System.out.println(student.getName());
+
     }
 }

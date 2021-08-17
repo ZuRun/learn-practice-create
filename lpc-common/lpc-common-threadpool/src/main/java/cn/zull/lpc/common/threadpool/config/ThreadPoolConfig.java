@@ -17,6 +17,10 @@ public class ThreadPoolConfig {
 
     @Bean
     public ParallelExecutor parallelExecutor() {
-        return new TransactionParallelExecutor(10, 10, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(100));
+        return new TransactionParallelExecutor(
+                10, 10,
+                60, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>(100)
+        );
     }
 }

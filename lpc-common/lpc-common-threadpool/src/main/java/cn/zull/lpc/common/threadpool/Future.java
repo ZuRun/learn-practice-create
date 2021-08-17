@@ -10,6 +10,7 @@ public interface Future {
 
     void get() throws InterruptedException;
 
+    @Deprecated
     boolean get(long timeout, TimeUnit unit) throws InterruptedException;
 
 }

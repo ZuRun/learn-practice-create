@@ -6,6 +6,8 @@ import cn.zull.lpc.practice.mybatis.entity.LpcDeviceInfo;
 import cn.zull.lpc.practice.mybatis.mapper.LpcDeviceInfoMapper;
 import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.StopWatch;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.sql.Array;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class LpcTransactionService {
     @Autowired
     LpcDeviceInfoMapper lpcDeviceInfoMapper;
+    @Autowired
+    SqlSessionFactory sqlSessionFactory;
 
 
     ThreadPoolExecutor executor = new ThreadPoolExecutor(50, 50,
@@ -43,26 +44,31 @@ public class LpcTransactionService {
 
     @Transactional
     public void test() {
-        int size = 2000;
+        int size = 99;
         LpcDeviceInfo lpcDeviceInfo1 = LpcDeviceInfo.builder().did(UUIDUtils.simpleUUID()).remark("~").sum(0).build();
-        lpcDeviceInfoMapper.insert(lpcDeviceInfo1);
+//        lpcDeviceInfoMapper.insert(lpcDeviceInfo1);
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
         List<Runnable> runnableList = new ArrayList<>(size);
+        sqlSessionFactory.openSession(ExecutorType.BATCH);
         for (int i = 0; i < size; i++) {
             final int m = i;
             LpcDeviceInfo lpcDeviceInfo = LpcDeviceInfo.builder().did(UUIDUtils.simpleUUID()).remark("~").sum(0).build();
-            runnableList.add(() -> {
+//            runnableList.add(() -> {
                 lpcDeviceInfoMapper.insert(lpcDeviceInfo);
-            });
+//            });
         }
         try {
             parallelExecutor.batchExecute(runnableList).get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("failed---------------");
+            throw new RuntimeException("failed");
+        } finally {
+
+            stopwatch.stop();
+            System.out.println("---------" + stopwatch.getTotalTimeMillis());
         }
-        stopwatch.stop();
-        System.out.println("---------" + stopwatch.getTotalTimeMillis());
+
     }
 
     public void test2() {
@@ -167,6 +173,12 @@ public class LpcTransactionService {
             tl.set(value);
         }
         threadLocals.clear();
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 300; i++) {
+            System.out.println("INSERT INTO `points_detail` ( `points_code`, `points_pool_code`, `unique_id`, `points_id`, `points_type`, `scene_id`, `source_id`, `sub_source_id`, `source_name`, `biz_flow_id`, `total_points`, `withdrawing_points`, `withdrawn_points`, `given_points`, `remain_points`, `user_id`, `biz_line`, `expire_at`, `occur_at`, `status`, `remark`, `is_deleted`, `version`, `updated_at`, `created_at`, `sub_source_code`) VALUES (" + 102765047482089472L + i + ", 'EA1DF3', '574', 1802765047373037568, 2, 'LALA_FESTIVAL', '12820000501', '30', '红包雨', '574', 10, 0, 0, 0, 10, '12820000501', '', '2020-12-24 00:00:00', '2020-12-21 16:12:20', 2, '', 0, 26, '2020-12-24 18:16:51', '2020-12-21 16:12:21', 'code_30');\r\n");
+        }
     }
 
 }
