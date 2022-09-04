@@ -7,8 +7,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author jared.zu
  * @date 2021/2/12 20:25:23
@@ -22,7 +20,7 @@ public class StockServiceTest {
         mockList.add("a");
         mockList.clear();
 
-        Mockito.when(mockList.add(1)).thenAnswer();
+//        Mockito.when(mockList.add(1)).thenAnswer();
         System.out.println(mockList.get(2));
     }
 }
